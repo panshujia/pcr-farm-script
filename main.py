@@ -181,17 +181,17 @@ if __name__ == '__main__':
     踢出换工会上支援
     '''
     login(lines[0],farm1Sudo)
-    login(lines[1],farm2Sudo)
+    
     login(lines[2],realAccount)
-    tohomepage(lines[0:3])
-    mainrun(lines[0:3],['close_white'])
+    tohomepage([lines[0],lines[2]])
+    mainrun([lines[0],lines[2]],['close_white'])
     kick([lines[0]])
     soadd([lines[2]],'农场2')
     time.sleep(1)
     mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
     time.sleep(1.5)
     mainrun([lines[2]],['homepage_red'])
-    mainrun(lines[0:3],['mainpage','backtotitle','ok_blue'])
+    mainrun([lines[0],lines[2]],['mainpage','backtotitle','ok_blue'])
 
 
 
@@ -229,18 +229,18 @@ if __name__ == '__main__':
     '''
     踢出换工会上支援
     '''
-    login(lines[0],farm1Sudo)
+    
     login(lines[1],farm2Sudo)
     login(lines[2],realAccount)
-    tohomepage(lines[0:3])
-    mainrun(lines[0:3],['close_white'])
+    tohomepage([lines[1],lines[2]])
+    mainrun([lines[1],lines[2]],['close_white'])
     kick([lines[1]])
     soadd([lines[2]],'农场1')
     time.sleep(1)
     mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
     time.sleep(1.5)
     mainrun([lines[2]],['homepage_red'])
-    mainrun(lines[0:3],['mainpage','backtotitle','ok_blue'])
+    mainrun([lines[1],lines[2]],['mainpage','backtotitle','ok_blue'])
 
 
     #退出程序
