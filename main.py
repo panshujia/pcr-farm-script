@@ -1,5 +1,9 @@
 import os,time
 import cv2
+#from KAmove import kick,soadd
+farm1Sudo=['账号','密码']
+farm2Sudo=[]
+realAccount=[]
 
 def connect():
     try:
@@ -59,12 +63,13 @@ def mainrun(nameList,images):
                             #time.sleep(0.5)
                             break
                 break
+
 def tohomepage(nameList):
     for i in range(0,3):
         screenshot(nameList[0])
         if Image_to_position('skip', m = 0) != False:
             for name in nameList:
-                while True:
+                for i in range(0,3):
                     screenshot(name)
                     if Image_to_position('skip', m = 0) != False:
                         print('skip')
@@ -98,15 +103,43 @@ def login(name,idset):
             else:
                 click(1200,50,name)
 
-def getaccount():
+def getaccount(txtname):
     lines=[]
-    with open('accountlist.txt', 'r') as f:
+    with open(txtname, 'r') as f:
         lines=f.readlines()
         return lines
+
+def kick(enumList):
+    mainrun(enumList,['society','memberinfo','place','level','ok_blue'])
+    mainrun(enumList,['take','fuck_off','ok_blue','ok_white'])
+    mainrun(enumList,['level1','place2','ok_blue'])
+    mainrun(enumList,['homepage_red'])
+
+def soadd(enumList,soName):
+    mainrun(enumList,['society','sosetting','sosearch'])
+    screenshot(enumList[0])
+    while True:
+        if Image_to_position('soname', m = 0) != False:
+            print(center)
+            click(center[0], center[1],enumList[0])
+            os.system('adb -s '+enumList[0]+' shell input text "'+soName+'"')
+            #k = PyKeyboard()
+            mainrun(enumList,['ensurecn'])
+            break
+    time.sleep(1.5)
+    #click(enumList[0])
+    mainrun(enumList,['search','farmicon','farmjoin'])
+    time.sleep(1.5)
+    mainrun(enumList,['ok_blue'])
+    time.sleep(1.5)
+    mainrun(enumList,['ok_blue'])
+
 if __name__ == '__main__':
 
-    accountList=getaccount()#获取账号列表
+    accountList=getaccount('accountlist.txt')#获取账号列表1
+    
     connect()
+
     result = os.popen('adb devices')  
     res = result.read()
     lines=res.splitlines()[1:]
@@ -115,8 +148,6 @@ if __name__ == '__main__':
         lines[i]=lines[i].split('\t')[0]
     lines=lines[0:-1]
     print(lines)
-    #os.system('adb shell wm size')
-
 
     '''
     共25个号，5开为例
@@ -125,11 +156,14 @@ if __name__ == '__main__':
         '''
         依次登陆5个号
         '''
+        
         for i in range(0,len(lines)):
             login(lines[i],[accountList[i+step*5].split(' ')[0],accountList[i+step*5].split(' ')[1][0:-1]])
             print(accountList[i+step*5].split(' ')[0])
         tohomepage(lines)
         mainrun(lines,['close_white'])
+        
+        
         '''
         地下城战斗
         '''
@@ -141,5 +175,73 @@ if __name__ == '__main__':
         回登陆页，开始下一次iteration
         '''
         mainrun(lines,['mainpage','backtotitle','ok_blue'])
+
     
+    '''
+    踢出换工会上支援
+    '''
+    login(lines[0],farm1Sudo)
+    login(lines[1],farm2Sudo)
+    login(lines[2],realAccount)
+    tohomepage(lines[0:3])
+    mainrun(lines[0:3],['close_white'])
+    kick([lines[0]])
+    soadd([lines[2]],'qxxxFarm2')
+    time.sleep(1)
+    mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
+    time.sleep(1.5)
+    mainrun([lines[2]],['homepage_red'])
+    mainrun(lines[0:3],['mainpage','backtotitle','ok_blue'])
+
+
+
+    accountList=getaccount('accountlist2.txt')#获取账号列表2
+
+    '''
+    共15个号，5开为例
+    '''    
+    for step in range(0,3):
+        '''
+        依次登陆5个号
+        '''
+        
+        for i in range(0,len(lines)):
+            login(lines[i],[accountList[i+step*5].split(' ')[0],accountList[i+step*5].split(' ')[1][0:-1]])
+            print(accountList[i+step*5].split(' ')[0])
+        tohomepage(lines)
+        mainrun(lines,['close_white'])
+        
+        
+        '''
+        地下城战斗
+        '''
+        
+        
+        mainrun(lines,['explor','underground','normalUD','ok_blue','floor1','challenge_blue'])
+        mainrun(lines,['u1','pico','kkl','cat','getassist','assist','battlestart','ok_blue'])
+        mainrun(lines,['next_step','ok_white','withdraw','ok_blue'])
+        
+        '''
+        回登陆页，开始下一次iteration
+        '''
+        mainrun(lines,['mainpage','backtotitle','ok_blue'])
+    
+    '''
+    踢出换工会上支援
+    '''
+    login(lines[0],farm1Sudo)
+    login(lines[1],farm2Sudo)
+    login(lines[2],realAccount)
+    tohomepage(lines[0:3])
+    mainrun(lines[0:3],['close_white'])
+    kick([lines[1]])
+    soadd([lines[2]],'qxxxFarm1')
+    time.sleep(1)
+    mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
+    time.sleep(1.5)
+    mainrun([lines[2]],['homepage_red'])
+    mainrun(lines[0:3],['mainpage','backtotitle','ok_blue'])
+
+
+    #退出程序
     os.system('adb kill-server')
