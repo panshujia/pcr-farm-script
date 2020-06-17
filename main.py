@@ -7,7 +7,7 @@ realAccount=[]
 
 def connect():
     try:
-        os.system('adb connect 127.0.0.1:7555')
+        os.system('adb connect 127.0.0.1:5554')#不同模拟器端口不同，需要自己修改，这个是单开用的，多开这个函数没用
     except:
         print('连接失败')
 
