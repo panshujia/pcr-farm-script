@@ -1,13 +1,14 @@
 import os,time
 import cv2
 #from KAmove import kick,soadd
-farm1Sudo=['账号','密码']
-farm2Sudo=[]
-realAccount=[]
+farm1Sudo=['biechangz777300@126.com','100041']
+farm2Sudo=['xiangxiyu711707073@126.com','100041']
+realAccount=['tns0zh','dnxdyi123']
+
 
 def connect():
     try:
-        os.system('adb connect 127.0.0.1:5554')#不同模拟器端口不同，需要自己修改，这个是单开用的，多开这个函数没用
+        os.system('adb connect 127.0.0.1:5554')
     except:
         print('连接失败')
 
@@ -25,6 +26,7 @@ def resize_img(img_path):
     img1 = cv2.imread(img_path, 0)
     img2 = cv2.imread('images.png', 0)
     height, width = img1.shape[:2]
+    
     ratio = 1920 / img2.shape[1]
     size = (int(width/ratio), int(height/ratio))
     return cv2.resize(img1, size, interpolation = cv2.INTER_AREA)
@@ -37,7 +39,7 @@ def Image_to_position(image, m = 0):
     image_x, image_y = template.shape[:2]
     result = cv2.matchTemplate(screen, template, methods[m])
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
-    #print(image,max_val)
+    print(image,max_val)
     if max_val > 0.7:
         global center
         center = (max_loc[0] + image_y / 2, max_loc[1] + image_x / 2)
@@ -59,9 +61,28 @@ def mainrun(nameList,images):
                             print(image)
                             now=image
                             print(center)
-                            click(center[0], center[1],name)
+                            if image=='timeadd':
+                                for _ in range(0,30):
+                                    click(center[0], center[1],name)
+                            else:
+                                click(center[0], center[1],name)
                             #time.sleep(0.5)
                             break
+                break
+    
+def mainrunQuick(nameList,images):
+    
+    for image in images:
+        while True:
+            screenshot(nameList[0])
+            if Image_to_position(image, m = 0) != False:
+                for name in nameList:
+                    if image=='timeadd':
+                        for _ in range(0,30):
+                            click(center[0], center[1],name)
+                    else:
+                        click(center[0], center[1],name)
+                    #time.sleep(0.)
                 break
 
 def tohomepage(nameList):
@@ -75,6 +96,7 @@ def tohomepage(nameList):
                         print('skip')
                         now='skip'
                         print(center)
+                        
                         click(center[0], center[1],name)
                         time.sleep(0.5)
                         break
@@ -110,8 +132,14 @@ def getaccount(txtname):
         return lines
 
 def kick(enumList):
-    mainrun(enumList,['society','memberinfo','place','level','ok_blue'])
-    mainrun(enumList,['take','fuck_off','ok_blue','ok_white'])
+    mainrun(enumList,['society'])
+    time.sleep(1)
+    mainrun(enumList,['memberinfo'])
+    time.sleep(1)
+    mainrun(enumList,['place','level','ok_blue'])
+    mainrun(enumList,['take','fuck_off','ok_blue'])
+    time.sleep(1)
+    mainrun(enumList,['ok_white'])
     mainrun(enumList,['level1','place2','ok_blue'])
     mainrun(enumList,['homepage_red'])
 
@@ -135,7 +163,7 @@ def soadd(enumList,soName):
     mainrun(enumList,['ok_blue'])
 
 if __name__ == '__main__':
-
+    
     accountList=getaccount('accountlist.txt')#获取账号列表1
     
     connect()
@@ -148,45 +176,55 @@ if __name__ == '__main__':
         lines[i]=lines[i].split('\t')[0]
     lines=lines[0:-1]
     print(lines)
-
     '''
     共25个号，5开为例
     '''    
     for step in range(0,5):
+
         '''
         依次登陆5个号
         '''
         
         for i in range(0,len(lines)):
             login(lines[i],[accountList[i+step*5].split(' ')[0],accountList[i+step*5].split(' ')[1][0:-1]])
+            #login(lines[i],[accountList[i+step*5+5].split(' ')[0],accountList[i+step*5+5].split(' ')[1][0:-1]])
             print(accountList[i+step*5].split(' ')[0])
         tohomepage(lines)
-        mainrun(lines,['close_white'])
+        mainrunQuick(lines,['close_white'])
+
+        for _ in range(0,3):
+            mainrunQuick(lines,['add_blue','ok_blue','ok_white'])
         
+        mainrunQuick(lines,['explor','masterbatch','3-1','timeadd','run31','ok_blue'])
+        time.sleep(22)
+        mainrun(lines,['ok_white','cancel_white'])
         
         '''
         地下城战斗
         '''
-        mainrun(lines,['explor','underground','normalUD','ok_blue','floor1','challenge_blue'])
-        mainrun(lines,['u1','pico','kkl','cat','getassist','assist','battlestart','ok_blue'])
-        mainrun(lines,['next_step','ok_white','withdraw','ok_blue'])
+        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue','floor1','challenge_blue'])
+        #mainrunQuick(lines,['u1','pico','kkl','cat','getassist','assist','battlestart','ok_blue'])
+        mainrunQuick(lines,['getassist','assist','battlestart','ok_blue'])
+        time.sleep(1)
+        mainrunQuick(lines,['menu_white','giveup_white','giveup_blue'])
+        mainrun(lines,['withdraw','ok_blue'])
         
         '''
         回登陆页，开始下一次iteration
         '''
-        mainrun(lines,['mainpage','backtotitle','ok_blue'])
+        mainrunQuick(lines,['mainpage','backtotitle','ok_blue'])
 
     
     '''
     踢出换工会上支援
     '''
     login(lines[0],farm1Sudo)
-    
+    #login(lines[1],farm2Sudo)
     login(lines[2],realAccount)
     tohomepage([lines[0],lines[2]])
     mainrun([lines[0],lines[2]],['close_white'])
     kick([lines[0]])
-    soadd([lines[2]],'农场2')
+    soadd([lines[2]],'qxxxFarm2')
     time.sleep(1)
     mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
     time.sleep(1.5)
@@ -200,42 +238,51 @@ if __name__ == '__main__':
     '''
     共15个号，5开为例
     '''    
-    for step in range(0,3):
+    for step in range(1,3):
         '''
         依次登陆5个号
         '''
         
         for i in range(0,len(lines)):
             login(lines[i],[accountList[i+step*5].split(' ')[0],accountList[i+step*5].split(' ')[1][0:-1]])
+            #login(lines[i],[accountList[i+step*5+5].split(' ')[0],accountList[i+step*5+5].split(' ')[1][0:-1]])
             print(accountList[i+step*5].split(' ')[0])
         tohomepage(lines)
-        mainrun(lines,['close_white'])
+        mainrunQuick(lines,['close_white'])
+
+        for _ in range(0,3):
+            mainrunQuick(lines,['add_blue','ok_blue','ok_white'])
         
+        mainrunQuick(lines,['explor','masterbatch','3-1','timeadd','run31','ok_blue'])
+        time.sleep(22)
+        mainrun(lines,['ok_white','cancel_white'])
         
         '''
         地下城战斗
         '''
+        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue','floor1','challenge_blue'])
+        #mainrunQuick(lines,['u1','pico','kkl','cat','getassist','assist','battlestart','ok_blue'])
+        mainrunQuick(lines,['getassist','assist','battlestart','ok_blue'])
         
-        
-        mainrun(lines,['explor','underground','normalUD','ok_blue','floor1','challenge_blue'])
-        mainrun(lines,['u1','pico','kkl','cat','getassist','assist','battlestart','ok_blue'])
-        mainrun(lines,['next_step','ok_white','withdraw','ok_blue'])
+        time.sleep(1)
+        mainrunQuick(lines,['menu_white','giveup_white','giveup_blue'])
+        mainrun(lines,['withdraw','ok_blue'])
         
         '''
         回登陆页，开始下一次iteration
         '''
-        mainrun(lines,['mainpage','backtotitle','ok_blue'])
+        mainrunQuick(lines,['mainpage','backtotitle','ok_blue'])
     
     '''
     踢出换工会上支援
     '''
-    
+    #login(lines[0],farm1Sudo)
     login(lines[1],farm2Sudo)
     login(lines[2],realAccount)
     tohomepage([lines[1],lines[2]])
     mainrun([lines[1],lines[2]],['close_white'])
     kick([lines[1]])
-    soadd([lines[2]],'农场1')
+    soadd([lines[2]],'qxxxFarm1')
     time.sleep(1)
     mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
     time.sleep(1.5)
