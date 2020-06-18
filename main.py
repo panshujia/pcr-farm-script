@@ -1,9 +1,9 @@
 import os,time
 import cv2
 #from KAmove import kick,soadd
-farm1Sudo=['biechangz777300@126.com','100041']
-farm2Sudo=['xiangxiyu711707073@126.com','100041']
-realAccount=['tns0zh','dnxdyi123']
+farm1Sudo=['账号','密码']
+farm2Sudo=[，]
+realAccount=[，]
 
 
 def connect():
