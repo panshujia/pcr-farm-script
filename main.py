@@ -238,7 +238,7 @@ if __name__ == '__main__':
     '''
     共15个号，5开为例
     '''    
-    for step in range(1,3):
+    for step in range(0,3):
         '''
         依次登陆5个号
         '''
