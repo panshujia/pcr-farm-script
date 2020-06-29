@@ -1,10 +1,9 @@
 import os,time
 import cv2
 #from KAmove import kick,soadd
-farm1Sudo=[账号,密码]
-farm2Sudo=[,]
-realAccount=[,]
-
+farm1Sudo=[账号,密码]#农场1会长
+farm2Sudo=[,]#农场2会长
+realAccount=[,]#大号
 
 def connect():
     try:
@@ -81,7 +80,7 @@ def mainrunQuick(nameList,images):
                 break
 
 def tohomepage(nameList):
-    for i in range(0,8):
+    for i in range(0,6):
         screenshot(nameList[0])
         if Image_to_position('skip', m = 0) != False:
             for name in nameList:
@@ -128,12 +127,12 @@ def getaccount(txtname):
 
 def kick(enumList):
     mainrun(enumList,['society'])
-    time.sleep(1)
+    time.sleep(2.5)
     mainrun(enumList,['memberinfo'])
-    time.sleep(1)
+    time.sleep(3)
     mainrun(enumList,['place','level','ok_blue'])
     mainrun(enumList,['take','fuck_off','ok_blue'])
-    time.sleep(1)
+    time.sleep(2.5)
     mainrun(enumList,['ok_white'])
     mainrun(enumList,['level1','place2','ok_blue'])
     mainrun(enumList,['homepage_red'])
@@ -149,12 +148,12 @@ def soadd(enumList,soName):
             #k = PyKeyboard()
             mainrun(enumList,['ensurecn'])
             break
-    time.sleep(1.5)
+    time.sleep(3)
     #click(enumList[0])
     mainrun(enumList,['search','farmicon','farmjoin'])
-    time.sleep(1.5)
+    time.sleep(3)
     mainrun(enumList,['ok_blue'])
-    time.sleep(1.5)
+    time.sleep(3)
     mainrun(enumList,['ok_blue'])
 
 if __name__ == '__main__':
@@ -201,9 +200,11 @@ if __name__ == '__main__':
         '''
         地下城战斗
         '''
-        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue','floor1']
+        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue']
+        time.sleep(3)
+        mainrunQuick(lines,['floor1'])
         time.sleep(4)
-        mainrunQuick(lines,'challenge_blue'])
+        mainrunQuick(lines,['challenge_blue'])
         time.sleep(3)
         #mainrunQuick(lines,['u1','pico','kkl','cat','getassist','assist','battlestart','ok_blue'])
         mainrunQuick(lines,['getassist','assist','battlestart','ok_blue'])
@@ -226,14 +227,15 @@ if __name__ == '__main__':
     login(lines[0],farm1Sudo)
     #login(lines[1],farm2Sudo)
     login(lines[2],realAccount)
-    tohomepage([lines[0],lines[2]])
+    tohomepage([lines[0]])
+    tohomepage([lines[2]])
     time.sleep(2)
     mainrun([lines[0],lines[2]],['close_white'])
     time.sleep(2)
     kick([lines[0]])
     time.sleep(2)
     soadd([lines[2]],'qxxxFarm2')
-    time.sleep(2)
+    time.sleep(4)
     mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
     time.sleep(3)
     mainrun([lines[2]],['homepage_red'])
@@ -273,9 +275,11 @@ if __name__ == '__main__':
         '''
         地下城战斗
         '''
-        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue','floor1']
+        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue']
+        time.sleep(3)
+        mainrunQuick(lines,['floor1'])
         time.sleep(4)
-        mainrunQuick(lines,'challenge_blue'])
+        mainrunQuick(lines,['challenge_blue'])
         time.sleep(3)
         #mainrunQuick(lines,['u1','pico','kkl','cat','getassist','assist','battlestart','ok_blue'])
         mainrunQuick(lines,['getassist','assist','battlestart','ok_blue'])
@@ -303,7 +307,7 @@ if __name__ == '__main__':
     kick([lines[1]])
     time.sleep(2)
     soadd([lines[2]],'qxxxFarm1')
-    time.sleep(2)
+    time.sleep(4)
     mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
     time.sleep(3)
     mainrun([lines[2]],['homepage_red'])
