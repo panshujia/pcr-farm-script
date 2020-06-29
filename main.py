@@ -200,7 +200,7 @@ if __name__ == '__main__':
         '''
         地下城战斗
         '''
-        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue']
+        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue'])
         time.sleep(3)
         mainrunQuick(lines,['floor1'])
         time.sleep(4)
@@ -275,7 +275,7 @@ if __name__ == '__main__':
         '''
         地下城战斗
         '''
-        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue']
+        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue'])
         time.sleep(3)
         mainrunQuick(lines,['floor1'])
         time.sleep(4)
