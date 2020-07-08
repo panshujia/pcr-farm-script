@@ -128,51 +128,51 @@ def login(name,idset):
     '''
 登陆
     '''
-        while True:
-            screenshot(name)
-            if Image_to_position('ID', m = 0) != False:#正常流程
-                print('ID')
-                print(center)
-                click(center[0], center[1],name)
-                os.system('adb -s '+name+' shell input text "'+idset[0]+'"')
-                for image in ['password','login']:
-                    while True:
-                        screenshot(name)
-                        if Image_to_position(image, m = 0) != False:
-                            print(image)
-                            print(center)
-                            click(center[0], center[1],name)
-                            if image=='password':
-                                    os.system('adb -s '+name+' shell input text "'+idset[1]+'"')
-                            break
-                break
-            elif Image_to_position('back_to_title_cn', m = 0) != False:#网络错误返回标题
-                click(center[0], center[1],name)
+    while True:
+        screenshot(name)
+        if Image_to_position('ID', m = 0) != False:#正常流程
+            print('ID')
+            print(center)
+            click(center[0], center[1],name)
+            os.system('adb -s '+name+' shell input text "'+idset[0]+'"')
+            for image in ['password','login']:
                 while True:
                     screenshot(name)
-                    if Image_to_position('delete_white', m = 0) != False:
-                        print('delete_white')
+                    if Image_to_position(image, m = 0) != False:
+                        print(image)
                         print(center)
                         click(center[0], center[1],name)
-                        os.system('adb -s '+name+' shell input text "'+idset[0]+'"')
-                        click(640, 330,lines[0])
-                        for _ in range(0,15):
-                            os.system('adb -s '+lines[0]+' shell input keyevent 67')
-                        os.system('adb -s '+name+' shell input text "'+idset[1]+'"')
-                        while True:
-                            screenshot(name)
-                            if Image_to_position('login', m = 0) != False:
-                                print('login')
-                                print(center)
-                                click(center[0], center[1],name)
-                                break
+                        if image=='password':
+                                os.system('adb -s '+name+' shell input text "'+idset[1]+'"')
                         break
-                    else:
-                        click(1200, 50,name)
-                break
+            break
+        elif Image_to_position('back_to_title_cn', m = 0) != False:#网络错误返回标题
+            click(center[0], center[1],name)
+            while True:
+                screenshot(name)
+                if Image_to_position('delete_white', m = 0) != False:
+                    print('delete_white')
+                    print(center)
+                    click(center[0], center[1],name)
+                    os.system('adb -s '+name+' shell input text "'+idset[0]+'"')
+                    click(640, 330,lines[0])
+                    for _ in range(0,15):
+                        os.system('adb -s '+lines[0]+' shell input keyevent 67')
+                    os.system('adb -s '+name+' shell input text "'+idset[1]+'"')
+                    while True:
+                        screenshot(name)
+                        if Image_to_position('login', m = 0) != False:
+                            print('login')
+                            print(center)
+                            click(center[0], center[1],name)
+                            break
+                    break
+                else:
+                    click(1200, 50,name)
+            break
                         
-            else:
-                click(1200,50,name)
+        else:
+            click(1200,50,name)
 
 def getaccount(txtname):
     '''
