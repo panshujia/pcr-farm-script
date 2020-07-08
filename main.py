@@ -300,7 +300,7 @@ if __name__ == '__main__':
     time.sleep(2)
     kick([lines[0]])
     time.sleep(2)
-    soadd([lines[2]],'qxxxFarm2')
+    soadd([lines[2]],公会2名称)#注意名字要英文
     time.sleep(4)
     mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
     time.sleep(3)
@@ -380,7 +380,7 @@ if __name__ == '__main__':
     time.sleep(2)
     kick([lines[1]])
     time.sleep(2)
-    soadd([lines[2]],'qxxxFarm1')
+    soadd([lines[2]],公会1名称)#注意名字要全英文
     time.sleep(4)
     mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
     time.sleep(3)
