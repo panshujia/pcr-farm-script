@@ -155,9 +155,9 @@ def login(name,idset):
                     print(center)
                     click(center[0], center[1],name)
                     os.system('adb -s '+name+' shell input text "'+idset[0]+'"')
-                    click(640, 330,lines[0])
+                    click(640, 330,name)
                     for _ in range(0,15):
-                        os.system('adb -s '+lines[0]+' shell input keyevent 67')
+                        os.system('adb -s '+name+' shell input keyevent 67')
                     os.system('adb -s '+name+' shell input text "'+idset[1]+'"')
                     while True:
                         screenshot(name)
