@@ -252,6 +252,7 @@ if __name__ == '__main__':
             print(accountList[i+step*len(lines)].split(' ')[0])
         time.sleep(5)
         tohomepage(lines)
+        time.sleep(5)
         mainrunQuick(lines,['close_white'])
         time.sleep(4)
 
@@ -334,6 +335,7 @@ if __name__ == '__main__':
             print(accountList[i+step*len(lines)].split(' ')[0])
         time.sleep(5)
         tohomepage(lines)
+        time.sleep(5)
         mainrunQuick(lines,['close_white'])
         time.sleep(4)
 
