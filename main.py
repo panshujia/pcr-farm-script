@@ -300,22 +300,21 @@ if __name__ == '__main__':
     踢出换工会上支援
     '''
     login(lines[0],farm1Sudo)
-    #login(lines[1],farm2Sudo)
-    login(lines[2],realAccount)
+    login(lines[1],realAccount)
     tohomepage([lines[0]])
-    tohomepage([lines[2]])
-    time.sleep(2)
-    mainrun([lines[0],lines[2]],['close_white'])
+    tohomepage([lines[1]])
+    time.sleep(3)
+    mainrun([lines[0],lines[1]],['close_white'])
     time.sleep(2)
     kick([lines[0]])
     time.sleep(2)
-    soadd([lines[2]],名称)#公会2名称，注意要英文加数字，不能有中文
+    soadd([lines[1]],名称)#公会2名称，注意要英文加数字，不能有中文
     time.sleep(4)
-    mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
+    mainrun([lines[1]],['setassist','addselect','myassist','set','ok_blue'])
     time.sleep(3)
-    mainrun([lines[2]],['homepage_red'])
+    mainrun([lines[1]],['homepage_red'])
     time.sleep(3)
-    mainrun([lines[0],lines[2]],['mainpage','backtotitle','ok_blue'])
+    mainrun([lines[0],lines[1]],['mainpage','backtotitle','ok_blue'])
 
 
 
@@ -383,22 +382,21 @@ if __name__ == '__main__':
     踢出换工会上支援
     '''
     login(lines[0],farm2Sudo)
-    #login(lines[1],farm2Sudo)
-    login(lines[2],realAccount)
+    login(lines[1],realAccount)
     tohomepage([lines[0]])
-    tohomepage([lines[2]])
+    tohomepage([lines[1]])
     time.sleep(2)
-    mainrun([lines[0],lines[2]],['close_white'])
+    mainrun([lines[0],lines[1]],['close_white'])
     time.sleep(2)
     kick([lines[0]])
     time.sleep(2)
-    soadd([lines[2]],名称)#公会2名称，注意要英文加数字，不能有中文
+    soadd([lines[1]],名称)#公会1名称，注意要英文加数字，不能有中文
     time.sleep(4)
-    mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
+    mainrun([lines[1]],['setassist','addselect','myassist','set','ok_blue'])
     time.sleep(3)
-    mainrun([lines[2]],['homepage_red'])
+    mainrun([lines[1]],['homepage_red'])
     time.sleep(3)
-    mainrun([lines[0],lines[2]],['mainpage','backtotitle','ok_blue'])
+    mainrun([lines[0],lines[1]],['mainpage','backtotitle','ok_blue'])
 
 
     #退出程序
