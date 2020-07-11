@@ -111,10 +111,15 @@ def tohomepage(nameList):
         else:
             click(640,360,nameList[0])
             
-    mainrun(nameList,['choose_one','complete_start','skip_white'])
-    time.sleep(3)
-    for name in lines:
-        click(1100,60,name)
+   for i in range(0,4):
+        screenshot(nameList[0])
+        if Image_to_position('choose_one', m = 0) != False:
+            mainrun(nameList,['choose_one','complete_start','skip_white'])
+            time.sleep(3)
+            for name in lines:
+                click(1100,60,name)
+        else:
+            time.sleep(1)
 def login(name,idset):
         while True:
             screenshot(name)
