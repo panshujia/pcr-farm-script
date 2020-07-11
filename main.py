@@ -110,7 +110,11 @@ def tohomepage(nameList):
             break
         else:
             click(640,360,nameList[0])
-
+            
+    mainrun(nameList,['choose_one','complete_start','skip_white'])
+    time.sleep(3)
+    for name in lines:
+        click(1100,60,name)
 def login(name,idset):
         while True:
             screenshot(name)
