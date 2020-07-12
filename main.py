@@ -111,7 +111,7 @@ def tohomepage(nameList):
         else:
             click(640,360,nameList[0])
             
-   for i in range(0,4):#兰得索尔赛马
+    for i in range(0,4):#兰得索尔赛马
         screenshot(nameList[0])
         if Image_to_position('complete_start', m = 0) != False:
             mainrun(nameList,['choose_one','complete_start','skip_white'])
