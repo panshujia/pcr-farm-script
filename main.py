@@ -5,6 +5,13 @@ farm1Sudo=['账号','密码']#公会1会长帐密
 farm2Sudo=[,]#公会2会长帐密
 realAccount=[,]#大号帐密
 
+buy_mana=True#买mana
+buy_energy=False#买体力
+horseRace=False#是否有赛马
+sweep=True#扫荡
+gift_get=False#收礼物
+UD_battle=False#地下城
+society_change=False#换工会
 
 def connect():
     try:
@@ -84,7 +91,7 @@ def mainrunQuick(nameList,images):
             if Image_to_position(image, m = 0) != False:
                 for name in nameList:
                     if image=='timeadd':
-                        os.system('adb -s '+name+' shell input swipe %s %s %s %s %s'%(center[0],center[1],center[0],center[1],8000))
+                        os.system('adb -s '+name+' shell input swipe %s %s %s %s %s'%(center[0],center[1],center[0],center[1],10000))
                     else:
                         click(center[0], center[1],name)
                     #time.sleep(0.)
@@ -110,16 +117,17 @@ def tohomepage(nameList):
             break
         else:
             click(640,360,nameList[0])
-            
-    for i in range(0,4):#兰得索尔赛马
-        screenshot(nameList[0])
-        if Image_to_position('complete_start', m = 0) != False:
-            mainrun(nameList,['choose_one','complete_start','skip_white'])
-            time.sleep(3)
-            for name in lines:
-                click(1100,60,name)
-        else:
-            time.sleep(1)
+    if horseRace:
+        for i in range(0,4):
+            screenshot(nameList[0])
+            if Image_to_position('complete_start', m = 0) != False:
+                mainrun(nameList,['choose_one','complete_start','skip_white'])
+                time.sleep(3)
+                for name in lines:
+                    click(1100,60,name)
+            else:
+                time.sleep(1)
+
 def login(name,idset):
         while True:
             screenshot(name)
@@ -213,10 +221,121 @@ def soadd(enumList,soName):
     mainrun(enumList,['search'])
     time.sleep(4)
     mainrun(enumList,['farmicon','farmjoin'])
-    time.sleep(3)
+    time.sleep(6)
     mainrun(enumList,['ok_blue'])
-    time.sleep(3)
+    time.sleep(6)
     mainrun(enumList,['ok_blue'])
+    time.sleep(6)
+    click(1200,50,enumList[0])
+
+def reto_elp(name):
+    screenshot(name[0])
+    os.system('adb -s '+name[0]+' shell am force-stop com.bilibili.priconne')
+    time.sleep(5)
+    os.system('adb -s '+name[0]+' shell am start -n com.bilibili.priconne/com.bilibili.princonne.bili.MainActivity')
+    time.sleep(10)
+    while Image_to_position('close_white', m = 0) == False:
+        click(640,360,name[0])
+        time.sleep(4)
+    mainrun(name,['close_white'])
+    time.sleep(3)
+    mainrunQuick(name,['explor'])
+    time.sleep(3)
+    mainrunQuick(name,['masterbatch'])
+    time.sleep(4)
+
+def mainIter(num,accountList):
+    '''
+    一轮循环
+    '''
+    for step in range(0,num):
+
+        '''
+        依次登陆4个号
+        '''
+        
+        for i in range(0,len(lines)):
+            login(lines[i],[accountList[i+step*len(lines)].split(' ')[0],accountList[i+step*len(lines)].split(' ')[1][0:-1]])
+            print(accountList[i+step*len(lines)].split(' ')[0])
+        time.sleep(5)
+        tohomepage(lines)
+        time.sleep(5)
+        mainrunQuick(lines,['close_white'])
+        time.sleep(4)
+        
+        if buy_mana:
+        #买21次mana
+            for i in lines:
+                click(249.5,81.5,i)
+            mainrunQuick(lines,['buy10','ok_blue'])
+            time.sleep(4)
+            mainrunQuick(lines,['buy180','ok_blue'])
+            time.sleep(14)
+            mainrunQuick(lines,['buy400','ok_blue'])
+            time.sleep(14)
+            mainrunQuick(lines,['cancel_white'])
+            time.sleep(4)
+        
+        if buy_energy:
+        #买六次体力，如果体力满了就会一直卡在这儿，所以第一次用的时候提前手动把体力全刷完
+            for _ in range(0,6):
+                mainrunQuick(lines,['add_blue','ok_blue','ok_white'])
+            time.sleep(6)
+        
+        if gift_get:
+        #收取礼物
+            mainrunQuick(lines,['gift','get_all','ok_blue'])
+            time.sleep(5)
+            mainrunQuick(lines,['ok_white'])
+            time.sleep(3)
+            mainrunQuick(lines,['cancel_white'])
+            time.sleep(3)
+        
+        if sweep:
+        #扫荡3-1
+            mainrunQuick(lines,['explor'])
+            time.sleep(3)
+            mainrunQuick(lines,['masterbatch'])
+            time.sleep(5)
+            for name in lines:
+                screenshot(name)
+                while Image_to_position('mainpage',m=0)==True:
+                    reto_elp([name])
+
+            mainrunQuick(lines,['3-1','timeadd','run_cn','ok_blue'])
+            time.sleep(2)
+            mainrunQuick(lines,['skip_cn','ok_white'])
+
+            for name in lines:
+                click(1100,60,name)
+            mainrun(lines,['cancel_white'])
+            time.sleep(5)
+            mainrunQuick(lines,['explor_blue'])
+            time.sleep(5)
+        
+        if UD_battle:
+            '''
+            地下城战斗
+            '''
+            mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue'])
+            time.sleep(8)
+            mainrunQuick(lines,['floor1'])
+            time.sleep(2)
+            mainrunQuick(lines,['challenge_blue'])
+            time.sleep(3)
+            #mainrunQuick(lines,['u1','pico','kkl','cat','getassist','assist','battlestart','ok_blue'])
+            mainrunQuick(lines,['getassist','assist','battlestart','ok_blue'])
+            time.sleep(5)
+            mainrunQuick(lines,['menu_white','giveup_white','giveup_blue'])
+            time.sleep(5)
+            mainrunQuick(lines,['withdraw','ok_blue'])
+            time.sleep(5)
+        '''
+        回登陆页，开始下一次iteration
+
+        '''
+        mainrunQuick(lines,['mainpage','backtotitle','ok_blue'])
+        time.sleep(3)
 
 if __name__ == '__main__':
     
@@ -224,8 +343,10 @@ if __name__ == '__main__':
     
     connect()
 
+
     result = os.popen('adb devices')  
     res = result.read()
+    global lines
     lines=res.splitlines()[1:]
     
     for i in range(0,len(lines)):
@@ -233,179 +354,68 @@ if __name__ == '__main__':
     lines=lines[0:-1]
     print(lines)
 
-    # for step in range(0,10):
+    # for step in range(0,3):
     #     for i in range(0,len(lines)):
     #         login(lines[i],[accountList[i+step*4].split(' ')[0],accountList[i+step*4].split(' ')[1][0:-1]])
     #         print(accountList[i+step*4].split(' ')[0])
     #     time.sleep(5)
+
     #     tohomepage(lines)
     #     mainrunQuick(lines,['close_white'])
 
     #     mainrunQuick(lines,['mainpage','backtotitle','ok_blue'])
     #     time.sleep(3)
 
-    '''
-    共28个号，4开为例
-
-
-    改多开方式就改range(0,n)中的n，例如改成双开就是改成range(0,10),10*2=20,20是一个公会小号的数量
-    '''
-    for step in range(0,7):
-
-        '''
-        依次登陆4个号
-        '''
-        
-        for i in range(0,len(lines)):
-            login(lines[i],[accountList[i+step*len(lines)].split(' ')[0],accountList[i+step*len(lines)].split(' ')[1][0:-1]])
-            print(accountList[i+step*len(lines)].split(' ')[0])
-        time.sleep(5)
-        tohomepage(lines)
-        time.sleep(5)
-        mainrunQuick(lines,['close_white'])
-        time.sleep(4)
-
-        #买六次体力，如果体力满了就会一直卡在这儿，所以第一次用的时候提前手动把体力全刷完
-        for _ in range(0,6):
-            mainrunQuick(lines,['add_blue','ok_blue','ok_white'])
-        time.sleep(6)
-        mainrunQuick(lines,['explor','masterbatch'])
-        time.sleep(3)
-        mainrunQuick(lines,['3-1','timeadd','run_cn','ok_blue'])
-        time.sleep(2)
-        mainrunQuick(lines,['skip_cn','ok_white'])
-
-        for name in lines:
-            click(1100,60,name)
-        mainrun(lines,['cancel_white'])
-        time.sleep(5)
-        mainrunQuick(lines,['explor_blue'])
-        '''
-        地下城战斗
-        '''
-        time.sleep(5)
-        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue'])
-        time.sleep(8)
-        mainrunQuick(lines,['floor1'])
-        time.sleep(2)
-        mainrunQuick(lines,['challenge_blue'])
-        time.sleep(3)
-        #mainrunQuick(lines,['u1','pico','kkl','cat','getassist','assist','battlestart','ok_blue'])
-        mainrunQuick(lines,['getassist','assist','battlestart','ok_blue'])
-        time.sleep(5)
-        mainrunQuick(lines,['menu_white','giveup_white','giveup_blue'])
-        time.sleep(5)
-        mainrunQuick(lines,['withdraw','ok_blue'])
-        time.sleep(5)
-        '''
-        回登陆页，开始下一次iteration
-
-        '''
-        mainrunQuick(lines,['mainpage','backtotitle','ok_blue'])
-        time.sleep(3)
-
+    mainIter(7,accountList)
     
     '''
     踢出换工会上支援
     '''
-    login(lines[0],farm1Sudo)
-    login(lines[1],realAccount)
-    tohomepage([lines[0]])
-    tohomepage([lines[1]])
-    time.sleep(3)
-    mainrun([lines[0],lines[1]],['close_white'])
-    time.sleep(2)
-    kick([lines[0]])
-    time.sleep(2)
-    soadd([lines[1]],名称)#公会2名称，注意要英文加数字，不能有中文
-    time.sleep(4)
-    mainrun([lines[1]],['setassist','addselect','myassist','set','ok_blue'])
-    time.sleep(3)
-    mainrun([lines[1]],['homepage_red'])
-    time.sleep(3)
-    mainrun([lines[0],lines[1]],['mainpage','backtotitle','ok_blue'])
+    if society_change:
+        login(lines[0],farm1Sudo)
+        #login(lines[1],farm2Sudo)
+        login(lines[2],realAccount)
+        tohomepage([lines[0]])
+        tohomepage([lines[2]])
+        time.sleep(2)
+        mainrun([lines[0],lines[2]],['close_white'])
+        time.sleep(2)
+        kick([lines[0]])
+        time.sleep(2)
+        soadd([lines[2]],name)#公会2名称，注意要英文加数字，不能有中文
+        time.sleep(4)
+        mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
+        time.sleep(3)
+        mainrun([lines[2]],['homepage_red'])
+        time.sleep(3)
+        mainrun([lines[0],lines[2]],['mainpage','backtotitle','ok_blue'])
 
 
 
     accountList=getaccount('accountlist2.txt')#获取账号列表2
-
-    '''
-    共12个号，4开为例
-    '''    
-    for step in range(0,3):
-
-        '''
-        依次登陆4个号
-        '''
-        
-        for i in range(0,len(lines)):
-            login(lines[i],[accountList[i+step*len(lines)].split(' ')[0],accountList[i+step*len(lines)].split(' ')[1][0:-1]])
-            print(accountList[i+step*len(lines)].split(' ')[0])
-        time.sleep(5)
-        tohomepage(lines)
-        time.sleep(5)
-        mainrunQuick(lines,['close_white'])
-        time.sleep(4)
-
-        #买六次体力，如果体力满了就会一直卡在这儿，所以第一次用的时候提前手动把体力全刷完
-        for _ in range(0,6):
-            mainrunQuick(lines,['add_blue','ok_blue','ok_white'])
-        time.sleep(6)
-        mainrunQuick(lines,['explor','masterbatch'])
-        time.sleep(3)
-        mainrunQuick(lines,['3-1','timeadd','run_cn','ok_blue'])
-        time.sleep(2)
-        mainrunQuick(lines,['skip_cn','ok_white'])
-
-        for name in lines:
-            click(1100,60,name)
-        mainrun(lines,['cancel_white'])
-        time.sleep(5)
-        mainrunQuick(lines,['explor_blue'])
-        '''
-        地下城战斗
-        '''
-        time.sleep(5)
-        mainrunQuick(lines,['explor_blue','underground','normalUD','ok_blue'])
-        time.sleep(8)
-        mainrunQuick(lines,['floor1'])
-        time.sleep(2)
-        mainrunQuick(lines,['challenge_blue'])
-        time.sleep(3)
-        #mainrunQuick(lines,['u1','pico','kkl','cat','getassist','assist','battlestart','ok_blue'])
-        mainrunQuick(lines,['getassist','assist','battlestart','ok_blue'])
-        time.sleep(5)
-        mainrunQuick(lines,['menu_white','giveup_white','giveup_blue'])
-        time.sleep(5)
-        mainrunQuick(lines,['withdraw','ok_blue'])
-        time.sleep(5)
-        '''
-        回登陆页，开始下一次iteration
-
-        '''
-        mainrunQuick(lines,['mainpage','backtotitle','ok_blue'])
-        time.sleep(3)
-
+    mainIter(3,accountList)
     
     '''
     踢出换工会上支援
     '''
-    login(lines[0],farm2Sudo)
-    login(lines[1],realAccount)
-    tohomepage([lines[0]])
-    tohomepage([lines[1]])
-    time.sleep(2)
-    mainrun([lines[0],lines[1]],['close_white'])
-    time.sleep(2)
-    kick([lines[0]])
-    time.sleep(2)
-    soadd([lines[1]],名称)#公会1名称，注意要英文加数字，不能有中文
-    time.sleep(4)
-    mainrun([lines[1]],['setassist','addselect','myassist','set','ok_blue'])
-    time.sleep(3)
-    mainrun([lines[1]],['homepage_red'])
-    time.sleep(3)
-    mainrun([lines[0],lines[1]],['mainpage','backtotitle','ok_blue'])
+    if society_change:
+        login(lines[0],farm2Sudo)
+        #login(lines[1],farm2Sudo)
+        login(lines[2],realAccount)
+        tohomepage([lines[0]])
+        tohomepage([lines[2]])
+        time.sleep(2)
+        mainrun([lines[0],lines[2]],['close_white'])
+        time.sleep(2)
+        kick([lines[0]])
+        time.sleep(2)
+        soadd([lines[2]],name)#公会2名称，注意要英文加数字，不能有中文
+        time.sleep(4)
+        mainrun([lines[2]],['setassist','addselect','myassist','set','ok_blue'])
+        time.sleep(3)
+        mainrun([lines[2]],['homepage_red'])
+        time.sleep(3)
+        mainrun([lines[0],lines[2]],['mainpage','backtotitle','ok_blue'])
 
 
     #退出程序
